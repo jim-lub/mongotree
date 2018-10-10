@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
 const {mongoose} = require('./db');
 const {ObjectID} = require('mongodb');
+const _ = require('lodash');
 
 const {Item} = require('./../models/item');
 
@@ -8,6 +9,7 @@ let newItem = (data) => {
   return new Promise((resolve, reject) => {
 
     data._id = new ObjectID();
+    data.order = 99;
 
     if (!data.name || !data._id) {reject('Invalid data.');}
     if (!data.parentID) {
@@ -19,7 +21,6 @@ let newItem = (data) => {
         reject(e);
       });
     }
-
 
     let item = new Item(data);
 
@@ -42,6 +43,52 @@ let findParent = (data) => {
   });
 };
 
-module.exports = {
-  newItem
+let buildTreeArray = () => {
+  return new Promise((resolve, reject) => {
+    let array = [];
+
+    Item.find().then((result) => {
+      result.forEach((cur) => {
+        let obj = {
+          _id: cur._id,
+          parentID: cur.parentID,
+          name: cur.name,
+          order: cur.order
+        };
+        array.push(obj);
+      });
+      return _.sortBy(array, ['name', 'order']);
+    }).then((array) => {
+      resolve(array);
+    }).catch((e) => {
+      reject(e);
+    });
+
+  });
 };
+
+module.exports = {
+  newItem,
+  buildTreeArray
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//

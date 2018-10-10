@@ -6,13 +6,18 @@ let ItemSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: true
   },
+  parentID: {
+
+  },
   name: {
     type: String,
     required: true,
     minlength: 6,
     trim: true
   },
-  parentID: {}
+  order: {
+
+  }
 });
 
 let Item = mongoose.model('Item', ItemSchema);

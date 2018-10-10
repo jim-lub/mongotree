@@ -9,6 +9,7 @@ const _ = require('lodash');
 
 const {ObjectID} = require('mongodb');
 const {mongoose} = require('./controllers/db');
+const {Item} = require('./models/item');
 
 const actions = require('./controllers/actions');
 
@@ -23,6 +24,19 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
 
+  actions.buildTreeArray().then((result) => {
+    console.log('------------------------->');
+    console.log(result);
+    console.log(`-------------------------> Array generated. ${result.length} entries.`);
+    socket.emit('newTreeArray', result);
+    // actions.sortTreeArray(result).then((result) => {
+    //   console.log('|||||||------------------------->');
+    //   console.log(result);
+    //   console.log(`|||||||-------------------------> Array sorted. ${result.length} entries.`);
+    //   socket.emit('newTreeArray', result);
+    // });
+  });
+
   socket.on('newItem', (data) => {
     data = _.pick(data, ['name', 'parentID']);
 
@@ -30,8 +44,9 @@ io.on('connection', (socket) => {
       console.log(item);
       socket.emit('parseItems', {
         _id: item._id,
+        parentID: item.parentID,
         name: item.name,
-        parentID: item.parentID
+        order: 99
       });
     }).catch((e) => {
       console.log(e);
