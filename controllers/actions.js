@@ -47,17 +47,32 @@ let buildTreeArray = () => {
   return new Promise((resolve, reject) => {
     let array = [];
 
+    let array2 = [
+      {name: 'item 1.1.1.2', id: 1112, parent: 111, order: 2},
+      {name: 'item 1', id: 1, parent: 0, order: 1},
+      {name: 'item 2', id: 2, parent: 0, order: 2},
+      {name: 'item 3', id: 3, parent: 0, order: 3},
+      {name: 'item 4', id: 4, parent: 0, order: 4},
+      {name: 'item 1.1', id: 11, parent: 1, order: 1},
+      {name: 'item 1.2', id: 12, parent: 1, order: 2},
+      {name: 'item 3.1', id: 31, parent: 3, order: 1},
+      {name: 'item 3.2', id: 32, parent: 3, order: 2},
+      {name: 'item 1.1.1', id: 111, parent: 11, order: 1},
+      {name: 'item 1.1.2', id: 112, parent: 11, order: 2},
+      {name: 'item 1.1.1.1', id: 1111, parent: 111, order: 1}
+    ];
+
     Item.find().then((result) => {
       result.forEach((cur) => {
         let obj = {
-          _id: cur._id,
-          parentID: cur.parentID,
           name: cur.name,
+          id: cur._id,
+          parent: cur.parentID,
           order: cur.order
         };
         array.push(obj);
       });
-      return _.sortBy(array, ['name', 'order']);
+      return array;
     }).then((array) => {
       resolve(array);
     }).catch((e) => {
@@ -67,9 +82,38 @@ let buildTreeArray = () => {
   });
 };
 
+let recursive = (array, parent, newArray) => {
+  return new Promise((resolve, reject) => {
+
+    !function() {
+      for (let i = 0; i < array.length; i++) {
+        let cur = array[i];
+        // console.log(`${cur.name} :: ${i}`);
+
+        if (cur.parent.toString() === parent.toString()) {
+          // console.log(`--> ${cur.name}`);
+          newArray.push(cur);
+          // console.log('--> new recursive starting: <--');
+
+          recursive(array, cur.id, newArray).then((result) => {
+            return;
+          });
+        }
+      }
+      resolve(newArray);
+    }().then((results) => {
+      resolve(newArray);
+    }).catch((e) => {
+      reject(e);
+    });
+
+  });
+};
+
 module.exports = {
   newItem,
-  buildTreeArray
+  buildTreeArray,
+  recursive
 };
 
 

@@ -27,12 +27,12 @@ document.getElementById('add-item').addEventListener("click", () => {
 socket.on('newTreeArray', (array) => {
 
   array.forEach((cur) => {
-    if (!cur.parentID) {
+    if (!cur.parent) {
       element = document.getElementById('container');
-      element.insertAdjacentHTML('afterbegin', html_item(cur._id, cur.parentID, cur.name));
+      element.insertAdjacentHTML('beforeend', html_item(cur.id, cur.parent, cur.name));
     } else {
-      element = document.getElementById(cur.parentID);
-      element.insertAdjacentHTML('afterbegin', html_itemSub(cur._id, cur.parentID, cur.name));
+      element = document.getElementById(cur.parent);
+      element.insertAdjacentHTML('beforeend', html_itemSub(cur.id, cur.parent, cur.name));
     }
   });
 
@@ -45,10 +45,10 @@ socket.on('parseItems', (item) => {
 
   if(!item.parentID){
     element = document.getElementById('container');
-    element.insertAdjacentHTML('afterbegin', html);
+    element.insertAdjacentHTML('beforeend', html);
   } else {
     element = document.getElementById(item.parentID);
-    element.insertAdjacentHTML('afterbegin', html2);
+    element.insertAdjacentHTML('beforeend', html2);
   }
 
 
