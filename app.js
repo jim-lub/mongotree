@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 const {ObjectID} = require('mongodb');
 const {mongoose} = require('./controllers/db-connect');
-const {Item} = require('./models/item');
+const {Folder} = require('./models/folder');
 
 const db = require('./controllers/db-actions');
 const tree = require('./controllers/tree-actions');
@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
     console.log('newItem request received');
     data = _.pick(data, ['name', 'parentID', 'order']);
 
-    db.newItem(data).then((item) => {
+    db.newFolder(data).then((item) => {
       console.log(item);
       socket.emit('parseItems', {
         _id: item._id,

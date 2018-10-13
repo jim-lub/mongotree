@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 const mongoose = require('mongoose');
 
-let ItemSchema = new mongoose.Schema({
+let FolderSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
     require: true
@@ -20,6 +20,6 @@ let ItemSchema = new mongoose.Schema({
   }
 });
 
-let Item = mongoose.model('Item', ItemSchema);
+let Folder = mongoose.model('Folder', FolderSchema);
 
-module.exports = {Item};
+module.exports = {Folder};

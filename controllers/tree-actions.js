@@ -3,13 +3,13 @@ const {mongoose} = require('./db-connect');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 
-const {Item} = require('./../models/item');
+const {Folder} = require('./../models/folder');
 
 let fetchFolders = () => {
   return new Promise((resolve, reject) => {
     let array = [];
 
-    Item.find().then((result) => {
+    Folder.find().then((result) => {
       result.forEach((cur) => {
         let obj = {
           _id: cur._id,

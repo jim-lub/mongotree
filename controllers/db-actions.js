@@ -3,9 +3,9 @@ const {mongoose} = require('./db-connect');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 
-const {Item} = require('./../models/item');
+const {Folder} = require('./../models/folder');
 
-let newItem = (data) => {
+let newFolder = (data) => {
   return new Promise((resolve, reject) => {
 
     data._id = new ObjectID();
@@ -22,9 +22,9 @@ let newItem = (data) => {
       });
     }
 
-    let item = new Item(data);
+    let folder = new Folder(data);
 
-    item.save().then((item) => {
+    folder.save().then((item) => {
       resolve(item);
     }).catch((e) => {
       reject(e);
@@ -34,7 +34,7 @@ let newItem = (data) => {
 
 let findParent = (data) => {
   return new Promise((resolve, reject) => {
-    Item.countDocuments({_id: data.parentID}, function (err, count) {
+    Folder.countDocuments({_id: data.parentID}, function (err, count) {
       if(err) {
         reject(0);
       }
@@ -44,5 +44,5 @@ let findParent = (data) => {
 };
 
 module.exports = {
-  newItem
+  newFolder
 };
