@@ -1,12 +1,27 @@
 /* jshint esversion: 6 */
 let socket = io();
 
-let html_item = (_id, parentID, name) => {
-  return `<div class="item--container"><div><div class="item--name level--0">${name}</div><div class="item--ID level--0">${_id}</div><div class="item--parentID level--0">${parentID}</div></div><div class="item--container--child" id="${_id}"></div></div>`;
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+
+document.getElementById('overlayTest').addEventListener("click", () => {
+    on();
+});
+document.getElementById('overlay').addEventListener("click", () => {
+    off();
+});
+
+let html_item = (_id, parentID, name, order, depth) => {
+  return `<div class="item--row"><div class="item--icon"><img src="/images/folder2.png"/></div><div class="item--name">${name}</div><div class="item--info info1">${depth}</div><div class="item--info info3">${parentID}</div><div class="item--info info2">${order}</div><div class="item--info info4">${_id}</div></div><div class="item--container--child" id="${_id}"></div>`;
 };
 
-let html_itemSub = (_id, parentID, name) => {
-  return `<div class="item--container"><div><div class="item--name level--1">${name}</div><div class="item--ID level--1">${_id}</div><div class="item--parentID level--1">${parentID}</div></div><div class="item--container--child" id="${_id}"></div></div>`;
+let html_itemSub = (_id, parentID, name, order, depth) => {
+  return `<div class="item--row"><div class="item--icon"><img src="/images/nextrow.png"/></div><div class="item--icon"><img src="/images/folder2.png"/></div><div class="item--name">${name}</div><div class="item--info info1">${depth}</div><div class="item--info info3">${parentID}</div><div class="item--info info2">${order}</div><div class="item--info info4">${_id}</div></div><div class="item--container--child" id="${_id}"></div>`;
 };
 
 socket.on('connect', () => {
@@ -20,19 +35,20 @@ socket.on('disconnect', () => {
 document.getElementById('add-item').addEventListener("click", () => {
   socket.emit('newItem', {
     name: document.getElementById('add-item--name').value,
-    parentID: document.getElementById('add-item--parentID').value
+    parentID: document.getElementById('add-item--parentID').value,
+    order: document.getElementById('add-item--order').value
   });
 });
 
 socket.on('newTreeArray', (array) => {
 
   array.forEach((cur) => {
-    if (!cur.parent) {
+    if (!cur.parentID) {
       element = document.getElementById('container');
-      element.insertAdjacentHTML('beforeend', html_item(cur.id, cur.parent, cur.name));
+      element.insertAdjacentHTML('beforeend', html_item(cur._id, cur.parentID, cur.name, cur.order, cur.depth));
     } else {
-      element = document.getElementById(cur.parent);
-      element.insertAdjacentHTML('beforeend', html_itemSub(cur.id, cur.parent, cur.name));
+      element = document.getElementById(cur.parentID);
+      element.insertAdjacentHTML('beforeend', html_itemSub(cur._id, cur.parentID, cur.name, cur.order, cur.depth));
     }
   });
 
@@ -40,8 +56,8 @@ socket.on('newTreeArray', (array) => {
 
 socket.on('parseItems', (item) => {
 
-  let html = html_item(item._id, item.parentID, item.name);
-  let html2 = html_itemSub(item._id, item.parentID, item.name);
+  let html = html_item(item._id, item.parentID, item.name, 0, 0);
+  let html2 = html_itemSub(item._id, item.parentID, item.name, 0, 0);
 
   if(!item.parentID){
     element = document.getElementById('container');
@@ -56,3 +72,16 @@ socket.on('parseItems', (item) => {
   //   element.insertAdjacentHTML('afterbegin', `<div class="">${cur}</div>`);
   // });
 });
+
+
+/*
+
+document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+deleteListItem: function(selectorID) {
+  var el = document.getElementById(selectorID);
+  el.parentNode.removeChild(el);
+},
+
+
+*/

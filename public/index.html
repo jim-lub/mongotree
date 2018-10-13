@@ -6,24 +6,42 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-    <h1>Mongotree</h1>
-
-    <form>
-      <input id="add-item--name" type="text" name="name" value="" placeholder="name">
-      <input id="add-item--parentID" type="text" name="parentID" value="" placeholder="parentID">
-      <div id="add-item"><img src="/images/plus.png" /></div>
-    </form>
-
-    <div id="container">
-      <!-- <div class="item--container">
-        <div>
-          <div class="item--name level--0">Item</div>
-          <div class="item--ID level--0">87da78d98wajnduyaw</div>
-          <div class="item--parentID level--0">da8wyd89awda</div>
+    <div id="overlay"></div>
+    <div class="grid-container">
+      <div class="grid-header">
+        <div class="header-left">
+          <div id="overlayTest"><img src="/images/overlayTemp.png" /></div>
         </div>
-        <div class="item--container--child">
+        <div class="header-left">
+          <div id="add-item"><img src="/images/plus.png" /></div>
         </div>
-      </div> -->
+        <div class="header-right">
+          <form class="form-style-1">
+            <input id="add-item--name" class="form-style-1" type="text" name="name" value="" placeholder="name">
+            <input id="add-item--parentID" class="form-style-1" type="text" name="parentID" value="" placeholder="parentID">
+            <input id="add-item--order" class="form-style-1" type="text" name="order" value="" placeholder="order">
+          </form>
+        </div>
+      </div>
+      <div class="grid-announce">
+
+      </div>
+      <div class="grid-main">
+
+        <div class="container" id="container">
+
+          <!-- <div class="item--row">
+            <div class="item--icon"><img src="/images/nextrow.png"/></div>
+            <div class="item--icon"><img src="/images/folder3.png"/></div>
+            <div class="item--name">Item</div>
+            <div class="item--info">3123</div>
+            <div class="item--info">this</div>
+          </div>
+          <div class="item--container--child">
+          </div> -->
+
+        </div>
+      </div>
     </div>
 
     <!-- <div id="container">
