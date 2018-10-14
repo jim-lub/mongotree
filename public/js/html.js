@@ -12,22 +12,22 @@ let html = (function() {
         c = `<div class="folder--show-hide-toggle"><img src="./images/hidefolder.png"/></div>`;
       }
 
-      h = `<div class="folder--container">`;
+      h = `<div class="folder--container" id="${data._id}">`;
         h += `<div class="folder--row depth${data.depth}b">`;
-        h += `<div class="folder--row-left">`;
-          h += `<div class="folder--depthVisual_1 depth${data.depth}"></div>`;
-          h += c;
-          h += `<div class="folder--name">/${data.name}</div>`;
+          h += `<div class="folder--row-left">`;
+            h += `<div class="folder--depthVisual_1 depth${data.depth}"></div>`;
+            h += c;
+            h += `<div class="folder--name">/${data.name}</div>`;
+          h += `</div>`;
+          h += `<div class="folder--row-right">`;
+            h += `<div class="folder--info info1">${data.depth}</div>`;
+            h += `<div class="folder--info info2">${data.order}</div>`;
+            h  += `<div class="folder--info info3 parent-folder--button">${data._id}</div>`;
+            h += `<div class="folder--info info4 delete-folder--button">delete</div>`;
+          h += `</div>`;
         h += `</div>`;
-      h += `<div class="folder--row-right">`;
-          h += `<div class="folder--info info1">${data.depth}</div>`;
-          h += `<div class="folder--info info2">${data.order}</div>`;
-          h  += `<div class="folder--info info3">${data._id}</div>`;
-          h += `<div class="folder--info info4">0</div>`;
+        h += `<div class="folder--children depth${data.depth}b">`;
         h += `</div>`;
-      h += `</div>`;
-      h += `<div class="folder--children depth${data.depth}b" id="${data._id}">`;
-      h += `</div>`;
       h += `</div>`;
 
       return h;

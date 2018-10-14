@@ -41,7 +41,19 @@ io.on('connection', (socket) => {
     })
     .catch((e) => console.log(e));
   });
-  
+
+  /** Delete a folder; get updated folder structure and send to client **/
+  socket.on('deleteFolder', (data) => {
+    db.deleteFolder(_.pick(data, ['_id'])).then((result) => {
+      console.log(result);
+      tree.init().then((result) => {
+        socket.emit('buildTreeStructure', result);
+      });
+    })
+    .catch((e) => console.log(e));
+    console.log(`Delete folder ${data._id}`);
+  });
+
 });
 
 server.listen(port, () => {

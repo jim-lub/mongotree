@@ -10,13 +10,13 @@ socket.on('buildTreeStructure', (array) => {
     $('#container').empty();
 
     array.forEach((cur) => {
-      if(!cur.order){cur.order = 99;}
-      if(!cur.depth){cur.depth = 0;}
-      if(!cur.hasChild){cur.hasChild = false;}
+      cur.order = cur.order || 99;
+      cur.depth = cur.depth || 0;
+      cur.hasChild = cur.hasChild || false;
       if (!cur.parentID) {
         $('#container').append(html.folderRow(cur));
       } else {
-        $('#' + cur.parentID).append(html.folderRow(cur));
+        $('#' + cur.parentID).children('.folder--children').append(html.folderRow(cur));
       }
     });
   });
@@ -31,6 +31,35 @@ $(document).ready(function(){
     });
   });
 });
+$(document).ready(function(){
+  $(document).keypress(function(e) {
+    if (e.which === 13) {
+      socket.emit('newFolder', {
+        name: $('#add-folder--name').val(),
+        parentID: $('#add-folder--parentID').val()
+      });
+    }
+  });
+});
+
+// set parentID value
+$(document).ready(function(){
+  $('#container').on('click', '.parent-folder--button', function () {
+    let _id = $(this).closest('.folder--container').attr('id');
+    $('#add-folder--parentID').val(_id);
+  });
+});
+
+// delete folder event listener
+$(document).ready(function(){
+  $('#container').on('click', '.delete-folder--button', function () {
+    socket.emit('deleteFolder', {
+      _id: $(this).closest('.folder--container').attr('id')
+    });
+  });
+});
+
+
 
 
 // function on() {
