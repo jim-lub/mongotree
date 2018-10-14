@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
   tree.fetchFolders().then((result) => {
     tree.sortFolders_recursive(_.sortBy(result, ['order']), [], 0, 0).then((result) => {
       console.log(`||||||| -------------------> ${result.length} items.`);
+      // console.log(result);
       socket.emit('newTreeArray', result);
     });
   });
@@ -37,12 +38,12 @@ io.on('connection', (socket) => {
     data = _.pick(data, ['name', 'parentID', 'order']);
 
     db.newFolder(data).then((item) => {
-      console.log(item);
-      socket.emit('parseItems', {
-        _id: item._id,
-        parentID: item.parentID,
-        name: item.name,
-        order: item.order
+      tree.fetchFolders().then((result) => {
+        tree.sortFolders_recursive(_.sortBy(result, ['order']), [], 0, 0).then((result) => {
+          console.log(`||||||| -------------------> ${result.length} items.`);
+          // console.log(result);
+          socket.emit('newTreeArray', result);
+        });
       });
     }).catch((e) => {
       console.log(e);

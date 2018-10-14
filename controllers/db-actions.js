@@ -9,7 +9,7 @@ let newFolder = (data) => {
   return new Promise((resolve, reject) => {
 
     data._id = new ObjectID();
-
+    data.toggle = 1;
     if (!data.name || !data._id) {reject('Invalid data.');}
     if (!data.order) { data.order = 99; }
     if (!data.parentID) {
@@ -24,8 +24,8 @@ let newFolder = (data) => {
 
     let folder = new Folder(data);
 
-    folder.save().then((item) => {
-      resolve(item);
+    folder.save().then((folder) => {
+      resolve(folder);
     }).catch((e) => {
       reject(e);
     });

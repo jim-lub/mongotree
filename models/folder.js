@@ -6,17 +6,17 @@ let FolderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: true
   },
-  parentID: {
-
-  },
+  parentID: {},
   name: {
     type: String,
     required: true,
     minlength: 6,
     trim: true
   },
-  order: {
-
+  order: {},
+  toggle: {},
+  hasChild: {
+    type: Boolean
   }
 });
 

@@ -1,7 +1,7 @@
 * {
   padding: 0;
   margin: 0;
-  font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font: 12px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 html, body {
@@ -52,16 +52,16 @@ html, body {
   background-color: #c33149;
   font-weight: italic;
   font-size: 16px;
-}und-color: grey;
 }
+
 .grid-main {
-  background-color: red;
+  padding: 20px;
 }
 
 .header-left {
   float: left;
-  width: 32px;
-  height: 32px;
+  width: 60px;
+  height: 60px;
   padding: 10px;
   background-color: #b36a5e;
 }
@@ -70,34 +70,65 @@ html, body {
   padding: 8px;
 }
 
-#add--item {
-  left: 10px;
-}
+
+
+
 
 .container {
   max-width: 800px;
 }
 
-.item--row {
+.folder--container {
   display: inline-block;
   float: left;
   width: 100%;
-  padding: 1px;
-  padding-top: 3px;
-  border-bottom-style: dotted;
-  border-bottom-width: 1px;
-  border-bottom-color: black;
-}
-.item--icon {
-  float: left;
-}
-.item--name {
-  float: left;
-  font-size: 12px;
-  padding-left: 3px;
+  max-width: 800px;
 }
 
-.item--info {
+.folder--row {
+  float: left;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+  .folder--row-left {
+    float: left;
+  }
+    .folder--depthVisual_1 {
+      float: left;
+      width: 5px;
+      height: 30px;
+    }
+    .folder--depthVisual_2 {
+      float: left;
+      padding: 8px;
+    }
+    .folder--show-hide-toggle {
+      float: left;
+      padding: 7px;
+      padding-bottom: 0px;
+    }
+    .folder--name {
+      float: left;
+      padding: 6px;
+    }
+
+  .folder--row-right {
+    float: right;
+  }
+
+.folder--children {
+  float: left;
+  width: 100%;
+  margin-left: 2px;
+  padding-left: 13px;
+  border-left-style: dotted;
+  border-left-width: 1px;
+}
+
+.folder--info {
   float: right;
   padding: 2px;
   padding-left: 5px;
@@ -106,24 +137,77 @@ html, body {
   border-radius: 5px;
   font-size: 10px;
 }
-.info1 {
-  background-color: #c33149;
-}
-.info2 {
-  background-color: #a8c256;
-}
-.info3 {
-  background-color: #559cad;
-}
-.info4 {
-  background-color: #8c5e83;
-}
+  .info1 {
+    background-color: #c33149;
+  }
+  .info2 {
+    background-color: #a8c256;
+  }
+  .info3 {
+    background-color: #559cad;
+  }
+  .info4 {
+    background-color: #8c5e83;
+  }
 
-.item--container--child {
-  padding-left: 16px;
+  .depth1 { background-color: #12abd5; }
+  .depth2 { background-color: #239dda; }
+  .depth3 { background-color: #3889e0; }
+  .depth4 { background-color: #5075e7; }
+  .depth5 { background-color: #6b5cef; }
+  .depth6 { background-color: #8547f7; }
+  .depth7 { background-color: #9b32fe; }
+  .depth8 { background-color: #9b32fe; }
+  .depth9 { background-color: #9b32fe; }
+  .depth10 { background-color: #9b32fe; }
+  .depth11 { background-color: #9b32fe; }
+  .depth12 { background-color: #9b32fe; }
+
+  .depth1b { border-color: #12abd5; }
+  .depth2b { border-color: #239dda; }
+  .depth3b { border-color: #3889e0; }
+  .depth4b { border-color: #5075e7; }
+  .depth5b { border-color: #6b5cef; }
+  .depth6b { border-color: #8547f7; }
+  .depth7b { border-color: #9b32fe; }
+  .depth8b { border-color: #9b32fe; }
+  .depth9b { border-color: #9b32fe; }
+  .depth10b { border-color: #9b32fe; }
+  .depth11b { border-color: #9b32fe; }
+  .depth12b { border-color: #9b32fe; }
+
+.infinity {
+   position: relative;
+   width: 10px;
+   height: 10px;
+   box-sizing: content-box;
+  }
+.infinity:before, .infinity:after {
+    content: "";
+    box-sizing: content-box;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 10px;
+    height: 10px;
+    background-color: inherit;
+    border-color: inherit;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 12px 12px 12px 12px;
+    transform: rotate(135deg);
+  }
+
+
+
+
+
+
+
+
+#add--item {
+  left: 10px;
 }
-
-
 
 /* Tooltip container */
 .tooltip {
@@ -232,38 +316,3 @@ select{
 .form-style-1 .required{
     color:red;
 }
-
-
-/* #container {
-  display: inline-block;
-  border-style: solid;
-  border-width: 1px;
-  border-color: darkgray;
-}
-
-.item--container {
-}
-
-.item--name,
-.item--ID,
-.item--parentID {
-  float: left;
-  margin: 2px;
-  padding: 5px;
-  font-family: sans-serif;
-  font-size: 10px;
-}
-
-.level--0 {
-  width: 200px;
-  background-color: #f1f1f1;
-}
-
-.level--1 {
-  width: 200px;
-  background-color: skyblue;
-}
-
-.item--container--child {
-  padding-left: 25px;
-} */
