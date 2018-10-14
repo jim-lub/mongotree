@@ -6,6 +6,16 @@ const _ = require('lodash');
 const {Folder} = require('./../models/folder');
 const db = require('./db-actions');
 
+let init = () => {
+  return new Promise ((resolve, reject) => {
+    fetchFolders().then((result) => {
+      sortFolders_recursive(_.sortBy(result, ['order']), [], 0, 0).then((result) => {
+        resolve(result);
+      });
+    });
+  });
+};
+
 let fetchFolders = () => {
   return new Promise((resolve, reject) => {
     let array = [];
@@ -52,8 +62,7 @@ let sortFolders_recursive = (inputArray, outputArray, depth, parentID) => {
 };
 
 module.exports = {
-  fetchFolders,
-  sortFolders_recursive
+  init
 };
 
 // let depth_colorArray = ['9b32fe', '8547f7', '6b5cef', '5075e7', '3889e0', '239dda', '12abd5'];

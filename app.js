@@ -25,30 +25,23 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
 
-  tree.fetchFolders().then((result) => {
-    tree.sortFolders_recursive(_.sortBy(result, ['order']), [], 0, 0).then((result) => {
-      console.log(`||||||| -------------------> ${result.length} items.`);
-      // console.log(result);
-      socket.emit('newTreeArray', result);
-    });
-  });
+  /** First connection; get folder structure and send to client **/
+  tree.init().then((result) => {
+    socket.emit('buildTreeStructure', result);
+  })
+  .catch((e) => console.log(e));
 
-  socket.on('newItem', (data) => {
-    console.log('newItem request received');
-    data = _.pick(data, ['name', 'parentID', 'order']);
-
-    db.newFolder(data).then((item) => {
-      tree.fetchFolders().then((result) => {
-        tree.sortFolders_recursive(_.sortBy(result, ['order']), [], 0, 0).then((result) => {
-          console.log(`||||||| -------------------> ${result.length} items.`);
-          // console.log(result);
-          socket.emit('newTreeArray', result);
-        });
+  /** Create a new folder; get updated folder structure and send to client **/
+  socket.on('newFolder', (data) => {
+    db.newFolder(_.pick(data, ['name', 'parentID'])).then((folder) => {
+      console.log(folder);
+      tree.init().then((result) => {
+        socket.emit('buildTreeStructure', result);
       });
-    }).catch((e) => {
-      console.log(e);
-    });
+    })
+    .catch((e) => console.log(e));
   });
+  
 });
 
 server.listen(port, () => {

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
     <div id="overlay"></div>
@@ -13,13 +14,13 @@
           <div id="overlayTest"><img src="/images/overlayTemp.png" /></div>
         </div>
         <div class="header-left">
-          <div id="add-item"><img src="/images/plus.png" /></div>
+          <div id="add-folder--button"><img src="/images/plus.png" /></div>
         </div>
         <div class="header-right">
           <form class="form-style-1">
-            <input id="add-item--name" class="form-style-1" type="text" name="name" value="" placeholder="name">
-            <input id="add-item--parentID" class="form-style-1" type="text" name="parentID" value="" placeholder="parentID">
-            <input id="add-item--order" class="form-style-1" type="text" name="order" value="" placeholder="order">
+            <input id="add-folder--name" class="form-style-1" type="text" name="name" value="" placeholder="name">
+            <input id="add-folder--parentID" class="form-style-1" type="text" name="parentID" value="" placeholder="parentID">
+            <input id="add-folder--order" class="form-style-1" type="text" name="order" value="" placeholder="order">
           </form>
         </div>
       </div>
@@ -55,6 +56,7 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/html.js"></script>
     <script src="/js/index.js"></script>
   </body>
 </html>
