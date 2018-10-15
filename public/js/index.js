@@ -60,3 +60,23 @@ $(document).ready(function(){
     });
   });
 });
+
+// move folder UP event listener
+$(document).ready(function(){
+  $('#container').on('click', '.moveUp-folder--button', function () {
+    socket.emit('moveFolder', {
+      _id: $(this).closest('.folder--container').attr('id'),
+      direction: 'up'
+    });
+  });
+});
+
+// move folder DOWN event listener
+$(document).ready(function(){
+  $('#container').on('click', '.moveDown-folder--button', function () {
+    socket.emit('moveFolder', {
+      _id: $(this).closest('.folder--container').attr('id'),
+      direction: 'down'
+    });
+  });
+});

@@ -66,16 +66,93 @@ let deleteFolder_getChildren_recursive = (inputArray, outputArray, parentID) => 
   });
 };
 
+let moveFolder = (data, direction) => {
+  return new Promise((resolve, reject) => {
+    Promise.resolve(data)
+      .then(data => {
+        return getFolderById(data._id);
+      })
+      .then(data => {
+        return getFolderByParentId(data.parentID).then(result => {
+          return {
+            current: data,
+            array: result
+          };
+        });
+      })
+      .then(data => {
+        return moveFolder_update(data, direction);
+      })
+      .then(result => {
+        resolve(result);
+      })
+      .catch(e => reject(e));
+  });
+};
+
+let moveFolder_update = (data, direction) => {
+  return new Promise((resolve, reject) => {
+    let array = [];
+    let index = _.findIndex(data.array, ['_id', data.current._id]);
+    if (direction.direction === 'up') {
+      array = data.array.slice((index - 1), (index + 1));
+      if (array.length === 1) { reject('Already top folder'); }
+      let value = {
+        one: array[0].order,
+        two: array[1].order
+      };
+      array[0].order = value.two;
+      array[1].order = value.one;
+    } else if (direction.direction === 'down') {
+      array = data.array.slice(index, (index + 2));
+      if (array.length === 1) { reject('Already bottom folder'); }
+      let value = {
+        one: array[0].order,
+        two: array[1].order
+      };
+      array[0].order = value.two;
+      array[1].order = value.one;
+    } else {
+      reject('Direction invalid.');
+    }
+    console.log(direction.direction);
+    Promise.resolve()
+      .then(_ => {
+        console.log(`Moved ${array[0].name} to order ${array[0].order}`);
+        return Folder.findOneAndUpdate({
+          _id: array[0]._id
+        },{
+          $set: {order: array[0].order}
+        });
+      })
+      .then(_ => {
+        console.log(`Moved ${array[1].name} to order ${array[1].order}`);
+        return Folder.findOneAndUpdate({
+            _id: array[1]._id
+        },{
+          $set: {order: array[1].order}
+        });
+      })
+      .then(_ => {
+        resolve('Folder moved.');
+      })
+      .catch(e => reject(e));
+  });
+};
+
+
+// Returns a single object
 let getFolderById = (_id) => {
   return new Promise((resolve, reject) => {
-    Folder.find({_id}).limit(1).then((result) => resolve(result))
+    Folder.find({_id}).limit(1).then((result) => resolve(result[0]))
     .catch((e) => reject(e));
   });
 };
 
+// Returns an array of objects
 let getFolderByParentId = (_id) => {
   return new Promise((resolve, reject) => {
-    Folder.find({parentID: _id}).then((result) => resolve(result))
+    Folder.find({parentID: _id}).then((result) => resolve(_.sortBy(result, ['order']), [], 0, 0))
     .catch((e) => reject(e));
   });
 };
@@ -122,6 +199,7 @@ let fetchFolders = () => {
 module.exports = {
   newFolder,
   deleteFolder,
+  moveFolder,
   fetchFolders,
   getFolderById,
   getFolderByParentId

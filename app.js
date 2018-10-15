@@ -33,24 +33,51 @@ io.on('connection', (socket) => {
 
   /** Create a new folder; get updated folder structure and send to client **/
   socket.on('newFolder', (data) => {
-    db.newFolder(_.pick(data, ['name', 'parentID'])).then((folder) => {
-      console.log(folder);
-      tree.init().then((result) => {
-        socket.emit('buildTreeStructure', result);
-      });
-    })
-    .catch((e) => console.log(e));
+    Promise.resolve(data)
+      .then(data => {
+        console.log(data, ['name', 'parentID']);
+        return db.newFolder(_.pick(data, ['name', 'parentID']));
+      })
+      .then(data => {
+        console.log(data);
+        return tree.init();
+      })
+      .then(data => {
+        socket.emit('buildTreeStructure', data);
+      })
+      .catch(e => console.log(e));
   });
 
   /** Delete a folder; get updated folder structure and send to client **/
   socket.on('deleteFolder', (data) => {
-    db.deleteFolder(_.pick(data, ['_id'])).then((result) => {
-      console.log(result);
-      tree.init().then((result) => {
-        socket.emit('buildTreeStructure', result);
-      });
-    })
-    .catch((e) => console.log(e));
+    Promise.resolve(data)
+      .then(data => {
+        return db.deleteFolder(_.pick(data, ['_id']));
+      })
+      .then(data => {
+        console.log(data);
+        return tree.init();
+      })
+      .then(data => {
+        socket.emit('buildTreeStructure', data);
+      })
+      .catch(e => console.log(e));
+  });
+
+  /** Move a folder; get updated folder structure and send to client **/
+  socket.on('moveFolder', (data) => {
+    Promise.resolve(data)
+      .then(data => {
+        return db.moveFolder(_.pick(data, ['_id']), _.pick(data, ['direction']));
+      })
+      .then(data => {
+        console.log(data);
+        return tree.init();
+      })
+      .then(data => {
+        socket.emit('buildTreeStructure', data);
+      })
+      .catch(e => console.log(e));
   });
 
 });
