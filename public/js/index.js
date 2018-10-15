@@ -24,21 +24,23 @@ socket.on('buildTreeStructure', (array) => {
 
 // add a new folder event listener
 $(document).ready(function(){
-  $('#add-folder--button').click(function() {
+  $('#add-folder--button').click(function() { addFolder(); });
+
+  $(document).keypress(function(e) { if(e.which === 13) { addFolder(); }});
+
+  addFolder = () => {
     socket.emit('newFolder', {
       name: $('#add-folder--name').val(),
       parentID: $('#add-folder--parentID').val()
     });
-  });
+  };
 });
+
+// open overlay
 $(document).ready(function(){
-  $(document).keypress(function(e) {
-    if (e.which === 13) {
-      socket.emit('newFolder', {
-        name: $('#add-folder--name').val(),
-        parentID: $('#add-folder--parentID').val()
-      });
-    }
+  $('#container').on('click', '.overlay--button', function () {
+    let _id = $(this).closest('.folder--container').attr('id');
+    on();
   });
 });
 
@@ -58,33 +60,3 @@ $(document).ready(function(){
     });
   });
 });
-
-
-
-
-// function on() {
-//   document.getElementById("overlay").style.display = "block";
-// }
-//
-// function off() {
-//   document.getElementById("overlay").style.display = "none";
-// }
-//
-// document.getElementById('overlayTest').addEventListener("click", () => {
-//   on();
-// });
-// document.getElementById('overlay').addEventListener("click", () => {
-//   off();
-// });
-
-/*
-
-document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
-
-deleteListItem: function(selectorID) {
-  var el = document.getElementById(selectorID);
-  el.parentNode.removeChild(el);
-},
-
-
-*/

@@ -21,7 +21,7 @@ let html = (function() {
           h += `</div>`;
           h += `<div class="folder--row-right">`;
             h += `<div class="folder--info info1">${data.depth}</div>`;
-            h += `<div class="folder--info info2">${data.order}</div>`;
+            h += `<div class="folder--info info2 overlay--button">${data.order}</div>`;
             h  += `<div class="folder--info info3 parent-folder--button">${data._id}</div>`;
             h += `<div class="folder--info info4 delete-folder--button">delete</div>`;
           h += `</div>`;

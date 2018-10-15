@@ -11,7 +11,6 @@ let newFolder = (data) => {
     data._id = new ObjectID();
     data.toggle = 1;
     if (!data.name || !data._id) { reject('Invalid folder name'); }
-    if (!data.order) { data.order = 99; }
     if (!data.parentID) {
       data.parentID = 0;
     } else {
@@ -21,11 +20,15 @@ let newFolder = (data) => {
       .catch((e) => reject(e));
     }
 
-    let folder = new Folder(data);
-
-    folder.save()
-    .then((folder) => resolve(folder))
+    setFolderOrder(data.parentID).then((result) => {
+      data.order = result;
+      let folder = new Folder(data);
+      folder.save()
+      .then((folder) => resolve(folder))
+      .catch((e) => reject(e));
+    })
     .catch((e) => reject(e));
+
   });
 };
 
@@ -77,6 +80,18 @@ let getFolderByParentId = (_id) => {
   });
 };
 
+let setFolderOrder = (parentID) => {
+  return new Promise((resolve, reject) => {
+    fetchFolders().then((array) => {
+      return _.filter(array, {parentID});
+    })
+    .then((array) => {
+      resolve(array.length + 1);
+    })
+    .catch((e) => reject(e));
+  });
+};
+
 let fetchFolders = () => {
   return new Promise((resolve, reject) => {
     let array = [];
@@ -107,5 +122,7 @@ let fetchFolders = () => {
 module.exports = {
   newFolder,
   deleteFolder,
-  fetchFolders
+  fetchFolders,
+  getFolderById,
+  getFolderByParentId
 };

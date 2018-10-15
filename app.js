@@ -51,7 +51,6 @@ io.on('connection', (socket) => {
       });
     })
     .catch((e) => console.log(e));
-    console.log(`Delete folder ${data._id}`);
   });
 
 });
